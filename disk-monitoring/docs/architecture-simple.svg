@@ -21,11 +21,11 @@
 
   <!-- HUB -->
   <rect x="230" y="95" width="500" height="150" rx="14" fill="#eaf2fb" stroke="#0d3b66" stroke-width="2.5"/>
-  <text x="480" y="126" class="hub" text-anchor="middle">🎯 MONITORING ACCOUNT — "the HUB"</text>
+  <text x="480" y="126" class="hub" text-anchor="middle"> MONITORING ACCOUNT </text>
   <line x1="260" y1="140" x2="700" y2="140" stroke="#b8cfe6"/>
-  <text x="480" y="166" class="hubi" text-anchor="middle">📊 One dashboard showing ALL disks, across every account</text>
-  <text x="480" y="190" class="hubi" text-anchor="middle">🔔 Alarm rule: "any disk over 80% → alert on-call (email / Slack)"</text>
-  <text x="480" y="214" class="hubi" text-anchor="middle">🛠️ Ansible control node — sets up each VM once</text>
+  <text x="480" y="166" class="hubi" text-anchor="middle"> One dashboard showing ALL disks, across every account</text>
+  <text x="480" y="190" class="hubi" text-anchor="middle"> Alarm rule: "any disk over 80% → alert on-call (email / Slack)"</text>
+  <text x="480" y="214" class="hubi" text-anchor="middle"> Ansible control node — sets up each VM once</text>
 
   <!-- flow arrows from spokes up to hub -->
   <path class="flow" d="M160 470 C 160 360, 300 300, 360 250"/>
