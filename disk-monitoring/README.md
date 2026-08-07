@@ -108,19 +108,10 @@ disk-monitoring/
 
 ---
 
-## 5. Solution Workflow
-
-```
-Developer launches EC2  →  tag Monitoring=Enabled  →  aws_ec2 inventory discovers it
-  →  ansible-playbook deploy.yml (discover → install → configure → verify)
-  →  CloudWatch Agent collects disk metrics (60s)  →  metrics flow via OAM to the hub
-  →  central dashboard updates  →  alarm at 80%  →  SNS → email / Slack
-
-```
 
 ---
 
-## 6. Key Components Summary
+## 4. Key Components Summary
 
 | Requirement | Solution |
 | --- | --- |
@@ -133,7 +124,7 @@ Developer launches EC2  →  tag Monitoring=Enabled  →  aws_ec2 inventory disc
 | Alerting | CloudWatch Alarm (80%) + Amazon SNS |
 | Security | IAM, SSM, CloudTrail, least privilege, no inbound ports |
 
-### Access Management (detail)
+### Access Management 
 
 | Component | Purpose |
 | --- | --- |
@@ -142,8 +133,4 @@ Developer launches EC2  →  tag Monitoring=Enabled  →  aws_ec2 inventory disc
 | Cross-Account IAM Role | Access multiple AWS accounts from one hub |
 | CloudTrail | Audit all actions |
 
-### VM Discovery & Enrollment (detail)
-
-- **Discovery:** Ansible queries the AWS EC2 API via the dynamic inventory plugin; any running instance tagged `Monitoring=Enabled` appears automatically — no IPs to maintain.
-- **Enrollment:** on discovery, Ansible (over SSM) → installs the agent → configures monitoring → starts it → verifies status. The server then streams disk metrics to CloudWatch.
 
