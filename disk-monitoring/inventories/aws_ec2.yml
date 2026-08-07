@@ -17,16 +17,6 @@ filters:
   instance-state-name: running
   tag:Monitoring: Enabled
 
-# Auto-group discovered hosts for flexible targeting (env_prod, region_us-east-1, ...)
-keyed_groups:
-  - key: tags.Environment
-    prefix: env
-  - key: placement.region
-    prefix: region
-  - key: tags.OS
-    prefix: os
-  - key: owner_id
-    prefix: account
 
 hostnames:
   - instance-id
