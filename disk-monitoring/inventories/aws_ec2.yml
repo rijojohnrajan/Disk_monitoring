@@ -1,0 +1,37 @@
+---
+# AWS EC2 Dynamic Inventory
+# Ansible queries AWS live on every run instead of using a hand-typed host list.
+# A VM joins monitoring simply by carrying the tag  Monitoring=Enabled.
+#
+# Run once per member account by exporting that account's assume-role profile:
+#   AWS_PROFILE=member-acct-A ansible-playbook playbooks/deploy.yml
+plugin: amazon.aws.aws_ec2
+
+regions:
+  - us-east-1
+  - us-west-2
+  - eu-west-1
+
+# Server-side filter: only running, opted-in instances are returned
+filters:
+  instance-state-name: running
+  tag:Monitoring: Enabled
+
+# Auto-group discovered hosts for flexible targeting (env_prod, region_us-east-1, ...)
+keyed_groups:
+  - key: tags.Environment
+    prefix: env
+  - key: placement.region
+    prefix: region
+  - key: tags.OS
+    prefix: os
+  - key: owner_id
+    prefix: account
+
+hostnames:
+  - instance-id
+
+# Wire per-host SSM connection details from instance metadata
+compose:
+  ansible_aws_ssm_instance_id: instance_id
+  ansible_aws_ssm_region: placement.region

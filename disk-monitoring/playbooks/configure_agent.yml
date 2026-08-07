@@ -1,0 +1,7 @@
+---
+# Configure the CloudWatch Agent (deploy config + start).
+- name: Configure CloudWatch Agent
+  hosts: all
+  gather_facts: false
+  roles:
+    - cloudwatch_config

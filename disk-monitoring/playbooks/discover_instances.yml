@@ -1,0 +1,7 @@
+---
+# Discover & validate SSM reachability for all tagged, running instances.
+- name: Discover instances
+  hosts: all
+  gather_facts: false
+  roles:
+    - discovery

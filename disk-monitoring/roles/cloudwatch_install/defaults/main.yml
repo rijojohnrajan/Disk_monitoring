@@ -1,0 +1,2 @@
+---
+cwagent_ctl: /opt/aws/amazon-cloudwatch-agent/bin/amazon-cloudwatch-agent-ctl

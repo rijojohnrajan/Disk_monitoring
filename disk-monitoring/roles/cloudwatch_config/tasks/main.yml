@@ -1,0 +1,18 @@
+---
+# CONFIGURE: deploy the agent config and (re)start it. Restart only fires on change.
+- name: Deploy CloudWatch Agent configuration
+  ansible.builtin.template:
+    src: cloudwatch-agent.json.j2
+    dest: "{{ cwagent_config_path }}"
+    owner: root
+    group: root
+    mode: "0644"
+  become: true
+  notify: Restart CloudWatch Agent
+
+- name: Apply configuration and start the agent
+  ansible.builtin.command: >-
+    {{ cwagent_ctl }} -a fetch-config -m ec2 -s
+    -c file:{{ cwagent_config_path }}
+  become: true
+  changed_when: false

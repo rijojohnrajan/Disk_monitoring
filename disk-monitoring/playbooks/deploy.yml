@@ -1,0 +1,7 @@
+---
+# One command to run the full enrollment pipeline end-to-end:
+#   discover -> install -> configure -> verify
+- import_playbook: discover_instances.yml
+- import_playbook: install_agent.yml
+- import_playbook: configure_agent.yml
+- import_playbook: verify_agent.yml

@@ -1,0 +1,54 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: >
+  SNS topic + example low-disk-space alarm (fires at 80% used) in the monitoring
+  account. For fleet-wide coverage, generate one alarm per InstanceId/MountPath
+  (e.g. via a small Lambda that reads OAM metrics).
+Parameters:
+  NotificationEmail:
+    Type: String
+  Namespace:
+    Type: String
+    Default: CustomDisk
+  DiskThreshold:
+    Type: Number
+    Default: 80
+  ExampleInstanceId:
+    Type: String
+    Default: i-0123456789abcdef0
+  ExampleMountPath:
+    Type: String
+    Default: "/"
+Resources:
+  AlertTopic:
+    Type: AWS::SNS::Topic
+    Properties:
+      TopicName: disk-monitoring-alerts
+  AlertSubscription:
+    Type: AWS::SNS::Subscription
+    Properties:
+      TopicArn: !Ref AlertTopic
+      Protocol: email
+      Endpoint: !Ref NotificationEmail
+  DiskAlarm:
+    Type: AWS::CloudWatch::Alarm
+    Properties:
+      AlarmName: !Sub "DiskUsage-${ExampleInstanceId}-root"
+      AlarmDescription: Fires when a volume reaches the disk usage threshold.
+      Namespace: !Ref Namespace
+      MetricName: disk_used_percent
+      Dimensions:
+        - Name: InstanceId
+          Value: !Ref ExampleInstanceId
+        - Name: MountPath
+          Value: !Ref ExampleMountPath
+      Statistic: Maximum
+      Period: 300
+      EvaluationPeriods: 2
+      Threshold: !Ref DiskThreshold
+      ComparisonOperator: GreaterThanOrEqualToThreshold
+      TreatMissingData: breaching
+      AlarmActions: [ !Ref AlertTopic ]
+      OKActions: [ !Ref AlertTopic ]
+Outputs:
+  TopicArn:
+    Value: !Ref AlertTopic

@@ -1,0 +1,19 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: >
+  CloudWatch observability Link in a member account -> monitoring account sink.
+  Deploy via StackSet to every member account.
+Parameters:
+  SinkArn:
+    Type: String
+    Description: Sink ARN from monitoring-account-oam-sink.yaml
+Resources:
+  ObservabilityLink:
+    Type: AWS::Oam::Link
+    Properties:
+      LabelTemplate: "$AccountName"
+      ResourceTypes:
+        - "AWS::CloudWatch::Metric"
+      SinkIdentifier: !Ref SinkArn
+Outputs:
+  LinkArn:
+    Value: !GetAtt ObservabilityLink.Arn

@@ -1,0 +1,23 @@
+---
+# INSTALL: put the Amazon CloudWatch Agent on the host (OS-aware, idempotent).
+- name: Gather minimal OS facts (need ansible_os_family)
+  ansible.builtin.setup:
+    gather_subset:
+      - "!all"
+      - min
+
+# Installing from the official AWS S3 URL works on any AMI, even when the
+# package is not in the host's default repositories.
+- name: Install CloudWatch Agent (RedHat / Amazon Linux)
+  ansible.builtin.yum:
+    name: "https://s3.{{ ansible_aws_ssm_region }}.amazonaws.com/amazoncloudwatch-agent-{{ ansible_aws_ssm_region }}/amazon_linux/amd64/latest/amazon-cloudwatch-agent.rpm"
+    state: present
+    disable_gpg_check: true
+  become: true
+  when: ansible_os_family == "RedHat"
+
+- name: Install CloudWatch Agent (Debian / Ubuntu)
+  ansible.builtin.apt:
+    deb: "https://s3.{{ ansible_aws_ssm_region }}.amazonaws.com/amazoncloudwatch-agent-{{ ansible_aws_ssm_region }}/debian/amd64/latest/amazon-cloudwatch-agent.deb"
+  become: true
+  when: ansible_os_family == "Debian"

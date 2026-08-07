@@ -1,0 +1,7 @@
+---
+# Verify the agent is running and take an on-demand disk snapshot.
+- name: Verify CloudWatch Agent
+  hosts: all
+  gather_facts: false
+  roles:
+    - monitoring

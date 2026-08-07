@@ -1,0 +1,32 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: >
+  CloudWatch cross-account observability Sink in the monitoring account.
+  Member accounts in the org may create Links that share Metrics to this sink.
+Parameters:
+  OrgId:
+    Type: String
+    Description: AWS Organizations ID (o-xxxxxxxxxx) allowed to link.
+Resources:
+  ObservabilitySink:
+    Type: AWS::Oam::Sink
+    Properties:
+      Name: disk-monitoring-sink
+      Policy:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Principal: "*"
+            Action:
+              - oam:CreateLink
+              - oam:UpdateLink
+            Resource: "*"
+            Condition:
+              StringEquals:
+                aws:PrincipalOrgID: !Ref OrgId
+              "ForAllValues:StringEquals":
+                oam:ResourceTypes:
+                  - "AWS::CloudWatch::Metric"
+Outputs:
+  SinkArn:
+    Description: Pass this to member-account-oam-link.yaml
+    Value: !GetAtt ObservabilitySink.Arn

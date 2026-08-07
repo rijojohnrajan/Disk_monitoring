@@ -1,0 +1,55 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: >
+  Role the central monitoring/Ansible account assumes to discover instances and
+  run SSM commands in this member account. Deploy via StackSet to all accounts.
+Parameters:
+  MonitoringAccountId:
+    Type: String
+    Description: 12-digit account ID of the central monitoring account.
+  RoleName:
+    Type: String
+    Default: DiskMonitoringCrossAccountRole
+  ExternalId:
+    Type: String
+    Default: disk-monitoring
+Resources:
+  CrossAccountRole:
+    Type: AWS::IAM::Role
+    Properties:
+      RoleName: !Ref RoleName
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Principal:
+              AWS: !Sub arn:aws:iam::${MonitoringAccountId}:root
+            Action: sts:AssumeRole
+            Condition:
+              StringEquals:
+                sts:ExternalId: !Ref ExternalId
+      Policies:
+        - PolicyName: DiskMonitoringPermissions
+          PolicyDocument:
+            Version: '2012-10-17'
+            Statement:
+              - Sid: DiscoverInstances
+                Effect: Allow
+                Action:
+                  - ec2:DescribeInstances
+                  - ec2:DescribeTags
+                Resource: '*'
+              - Sid: RunViaSSM
+                Effect: Allow
+                Action:
+                  - ssm:SendCommand
+                  - ssm:StartSession
+                  - ssm:GetCommandInvocation
+                  - ssm:DescribeInstanceInformation
+                Resource: '*'
+              - Sid: PublishMetrics
+                Effect: Allow
+                Action: cloudwatch:PutMetricData
+                Resource: '*'
+Outputs:
+  RoleArn:
+    Value: !GetAtt CrossAccountRole.Arn

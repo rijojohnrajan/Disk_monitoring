@@ -1,0 +1,26 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: >
+  Instance profile attached to monitored EC2 VMs. Grants the minimum needed for
+  SSM management and CloudWatch Agent metric publishing.
+Resources:
+  DiskMonInstanceRole:
+    Type: AWS::IAM::Role
+    Properties:
+      RoleName: DiskMonitoringInstanceRole
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Principal: { Service: ec2.amazonaws.com }
+            Action: sts:AssumeRole
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore
+        - arn:aws:iam::aws:policy/CloudWatchAgentServerPolicy
+  DiskMonInstanceProfile:
+    Type: AWS::IAM::InstanceProfile
+    Properties:
+      InstanceProfileName: DiskMonitoringInstanceProfile
+      Roles: [ !Ref DiskMonInstanceRole ]
+Outputs:
+  InstanceProfileArn:
+    Value: !GetAtt DiskMonInstanceProfile.Arn

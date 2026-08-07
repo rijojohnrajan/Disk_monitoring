@@ -1,0 +1,7 @@
+---
+# Install the CloudWatch Agent on all discovered instances.
+- name: Install CloudWatch Agent
+  hosts: all
+  gather_facts: false
+  roles:
+    - cloudwatch_install

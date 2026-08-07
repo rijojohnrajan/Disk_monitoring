@@ -1,0 +1,5 @@
+---
+- name: Restart CloudWatch Agent
+  ansible.builtin.command: "{{ cwagent_ctl }} -a restart"
+  become: true
+  changed_when: false

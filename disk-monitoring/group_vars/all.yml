@@ -1,0 +1,18 @@
+---
+# --- Connection: reach VMs over SSM (no SSH keys, no open ports) ---
+ansible_connection: aws_ssm
+ansible_aws_ssm_region: us-east-1
+# An S3 bucket you own; the aws_ssm plugin uses it to transfer files to/from VMs:
+ansible_aws_ssm_bucket_name: CHANGE-ME-ansible-ssm-transfer-bucket
+
+# --- Monitoring configuration (single source of truth) ---
+cloudwatch_namespace: "CustomDisk"
+metrics_collection_interval: 60
+disk_threshold: 80     # single alert threshold (percent used)
+
+# Pseudo-filesystems to ignore when collecting
+ignore_fs_types:
+  - tmpfs
+  - devtmpfs
+  - overlay
+  - squashfs

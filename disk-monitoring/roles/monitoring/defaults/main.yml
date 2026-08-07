@@ -1,0 +1,9 @@
+---
+cloudwatch_namespace: "CustomDisk"
+disk_threshold: 80
+cwagent_ctl: /opt/aws/amazon-cloudwatch-agent/bin/amazon-cloudwatch-agent-ctl
+ignore_fs_types:
+  - tmpfs
+  - devtmpfs
+  - overlay
+  - squashfs

@@ -1,0 +1,5 @@
+---
+cloudwatch_namespace: "CustomDisk"
+metrics_collection_interval: 60
+cwagent_config_path: /opt/aws/amazon-cloudwatch-agent/etc/amazon-cloudwatch-agent.json
+cwagent_ctl: /opt/aws/amazon-cloudwatch-agent/bin/amazon-cloudwatch-agent-ctl

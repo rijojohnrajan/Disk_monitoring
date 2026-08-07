@@ -1,0 +1,13 @@
+---
+# DISCOVERY: confirm each dynamically-discovered instance is reachable via SSM
+# before we try to enroll it. (Actual discovery happens in the aws_ec2 inventory;
+# this role validates connectivity and records what was found.)
+- name: Confirm SSM connectivity to the instance
+  ansible.builtin.ping:
+  register: _ssm_ping
+
+- name: Show discovered instance
+  ansible.builtin.debug:
+    msg: >-
+      Discovered {{ ansible_aws_ssm_instance_id | default(inventory_hostname) }}
+      in {{ ansible_aws_ssm_region | default('n/a') }} — SSM reachable.
