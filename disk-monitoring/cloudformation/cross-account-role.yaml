@@ -5,7 +5,7 @@ Description: >
 Parameters:
   MonitoringAccountId:
     Type: String
-    Description: 12-digit account ID of the central monitoring account.
+    Description:  account ID of the central monitoring account.
   RoleName:
     Type: String
     Default: DiskMonitoringCrossAccountRole
