@@ -1,10 +1,5 @@
 ---
-# AWS EC2 Dynamic Inventory
-# Ansible queries AWS live on every run instead of using a hand-typed host list.
-# A VM joins monitoring simply by carrying the tag  Monitoring=Enabled.
-#
-# Run once per member account by exporting that account's assume-role profile:
-#   AWS_PROFILE=member-acct-A ansible-playbook playbooks/deploy.yml
+
 plugin: amazon.aws.aws_ec2
 
 regions:
